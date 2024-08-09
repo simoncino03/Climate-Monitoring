@@ -47,6 +47,7 @@ public class LoginRegistrazione extends javax.swing.JFrame {
         setTitle("Climate Monitoring");
         setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         setMaximumSize(new java.awt.Dimension(813, 752));
+        setResizable(false);
 
         PannelloLogin.setPreferredSize(new java.awt.Dimension(385, 625));
 
