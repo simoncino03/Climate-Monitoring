@@ -297,7 +297,7 @@ public class LoginRegistrazione extends javax.swing.JFrame {
         if (jTextField3.getText().isEmpty() || jTextField4.getText().isEmpty() || jTextField5.getText().isEmpty() ||
             jTextField6.getText().isEmpty() || jTextField7.getText().isEmpty() || jTextField8.getText().isEmpty()) {
             // Mostra il messaggio di errore
-            javax.swing.JOptionPane.showMessageDialog(this, "Alcuni campi non sono stati compilati", "Errore", javax.swing.JOptionPane.ERROR_MESSAGE);
+            javax.swing.JOptionPane.showMessageDialog(this, "Alcuni campi non sono stati compilati o non sono completi", "Errore", javax.swing.JOptionPane.ERROR_MESSAGE);
         } else {
             // Logica di registrazione qui
         }
