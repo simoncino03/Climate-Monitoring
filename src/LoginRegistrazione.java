@@ -54,6 +54,7 @@ public class LoginRegistrazione extends javax.swing.JFrame {
         jLabel1.setFont(new java.awt.Font("MV Boli", 3, 18)); // NOI18N
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel1.setText("Login");
+        jLabel1.setToolTipText("");
 
         jTextField1.setToolTipText("Inserisci la Tua Mail"); // NOI18N
         jTextField1.addActionListener(new java.awt.event.ActionListener() {
@@ -288,6 +289,10 @@ public class LoginRegistrazione extends javax.swing.JFrame {
             // Mostra il messaggio di errore
             javax.swing.JOptionPane.showMessageDialog(this, "Alcuni campi non sono stati compilati", "Errore", javax.swing.JOptionPane.ERROR_MESSAGE);
         } else {
+            PopUpOperatori po=new PopUpOperatori();
+            po.modificaTesto("Login");
+            this.setVisible(false);
+            po.setVisible(true);
             // Logica di login qui
         }
     }//GEN-LAST:event_jButton1ActionPerformed
@@ -299,13 +304,19 @@ public class LoginRegistrazione extends javax.swing.JFrame {
             // Mostra il messaggio di errore
             javax.swing.JOptionPane.showMessageDialog(this, "Alcuni campi non sono stati compilati o non sono completi", "Errore", javax.swing.JOptionPane.ERROR_MESSAGE);
         } else {
+            PopUpOperatori po=new PopUpOperatori();
+            po.modificaTesto("Registrazione");
+            this.setVisible(false);
+            po.setVisible(true);
             // Logica di registrazione qui
         }
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
         RicercaUtente ru=new RicercaUtente();
+        this.setVisible(false);
         ru.setVisible(true);
+        
     }//GEN-LAST:event_jButton4ActionPerformed
 
     /**
