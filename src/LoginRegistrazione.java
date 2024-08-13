@@ -1,3 +1,9 @@
+
+import java.rmi.RemoteException;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
@@ -289,11 +295,21 @@ public class LoginRegistrazione extends javax.swing.JFrame {
             // Mostra il messaggio di errore
             javax.swing.JOptionPane.showMessageDialog(this, "Alcuni campi non sono stati compilati", "Errore", javax.swing.JOptionPane.ERROR_MESSAGE);
         } else {
-            PopUpOperatori po=new PopUpOperatori();
-            po.modificaTesto("Login");
-            this.setVisible(false);
-            po.setVisible(true);
-            // Logica di login qui
+            String email=jTextField1.getText();
+            String pass=jTextField2.getText();
+            try {
+                ClientCM.login(email,pass);
+                /* PopUpOperatori po=new PopUpOperatori();
+                po.modificaTesto("Login");
+                this.setVisible(false);
+                po.setVisible(true);
+                // Logica di login qui
+                */
+            } catch (SQLException ex) {
+                Logger.getLogger(LoginRegistrazione.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (RemoteException ex) {
+                Logger.getLogger(LoginRegistrazione.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
     }//GEN-LAST:event_jButton1ActionPerformed
 
@@ -313,9 +329,8 @@ public class LoginRegistrazione extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
-        RicercaUtente ru=new RicercaUtente();
         this.setVisible(false);
-        ru.setVisible(true);
+        ClientCM.ricercaUtente();
         
     }//GEN-LAST:event_jButton4ActionPerformed
 
