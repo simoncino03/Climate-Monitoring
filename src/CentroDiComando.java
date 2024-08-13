@@ -51,16 +51,14 @@ public class CentroDiComando extends UnicastRemoteObject implements CentroDiComa
        
    }
     @Override
-    public void controlloLogin(String nome,String pass) throws SQLException, RemoteException 
+    public boolean controlloLogin(String nome,String pass) throws SQLException, RemoteException 
     {
-        String sql="select email,password from OperatoriRegistrati where email=? and passWord=?";
+        String sql="SELECT  email, password FROM public.\"OperatoriRegistrati\"where email='"+nome+"' and password='"+pass+"'";
         PreparedStatement preparedStatement = conn.prepareStatement(sql);
-        preparedStatement.setString(1, nome);
-        preparedStatement.setString(2, pass);
             ResultSet resultSet = preparedStatement.executeQuery();
-            while (resultSet.next()) {
-                String email = resultSet.getString("ID");
-                String password = resultSet.getString("NAME");
+           if(resultSet.next()) {
+                return true;
             }
+            return false;
         }
     }
