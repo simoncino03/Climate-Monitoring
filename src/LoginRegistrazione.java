@@ -44,7 +44,6 @@ public class LoginRegistrazione extends javax.swing.JFrame {
         jTextField5 = new javax.swing.JTextField();
         jTextField6 = new javax.swing.JTextField();
         jTextField7 = new javax.swing.JTextField();
-        jTextField8 = new javax.swing.JTextField();
         jComboBox1 = new javax.swing.JComboBox<>();
         jButton2 = new javax.swing.JButton();
         jButton4 = new javax.swing.JButton();
@@ -52,7 +51,6 @@ public class LoginRegistrazione extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Climate Monitoring");
         setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
-        setMaximumSize(new java.awt.Dimension(813, 752));
         setResizable(false);
 
         PannelloLogin.setPreferredSize(new java.awt.Dimension(385, 625));
@@ -157,13 +155,6 @@ public class LoginRegistrazione extends javax.swing.JFrame {
             }
         });
 
-        jTextField8.setToolTipText("Inserisci il tuo UserId Personale"); // NOI18N
-        jTextField8.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField8ActionPerformed(evt);
-            }
-        });
-
         jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Non Presente", "Uboldo", "" }));
         jComboBox1.setToolTipText("Il tuo centro di monitoraggio?");
         jComboBox1.setPreferredSize(new java.awt.Dimension(64, 22));
@@ -183,10 +174,6 @@ public class LoginRegistrazione extends javax.swing.JFrame {
         PannelloRegistrazioneLayout.setHorizontalGroup(
             PannelloRegistrazioneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(PannelloRegistrazioneLayout.createSequentialGroup()
-                .addGap(88, 88, 88)
-                .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 202, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(108, Short.MAX_VALUE))
-            .addGroup(PannelloRegistrazioneLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(PannelloRegistrazioneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jTextField7)
@@ -195,9 +182,12 @@ public class LoginRegistrazione extends javax.swing.JFrame {
                     .addComponent(jTextField3)
                     .addComponent(jTextField4, javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(jTextField5)
-                    .addComponent(jTextField6)
-                    .addComponent(jTextField8))
+                    .addComponent(jTextField6))
                 .addContainerGap())
+            .addGroup(PannelloRegistrazioneLayout.createSequentialGroup()
+                .addGap(90, 90, 90)
+                .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 203, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(90, 90, 90))
         );
         PannelloRegistrazioneLayout.setVerticalGroup(
             PannelloRegistrazioneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -213,14 +203,12 @@ public class LoginRegistrazione extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jTextField7, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jTextField8, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jTextField5, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(39, 39, 39))
+                .addContainerGap())
         );
 
         jButton4.setFont(new java.awt.Font("Segoe UI", 3, 18)); // NOI18N
@@ -285,10 +273,6 @@ public class LoginRegistrazione extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_jTextField7ActionPerformed
 
-    private void jTextField8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField8ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField8ActionPerformed
-
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // Controllo se i campi sono vuoti
         if (jTextField1.getText().isEmpty() || jTextField2.getText().isEmpty()) {
@@ -316,15 +300,23 @@ public class LoginRegistrazione extends javax.swing.JFrame {
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // Controllo se i campi sono vuoti
         if (jTextField3.getText().isEmpty() || jTextField4.getText().isEmpty() || jTextField5.getText().isEmpty() ||
-            jTextField6.getText().isEmpty() || jTextField7.getText().isEmpty() || jTextField8.getText().isEmpty()) {
+            jTextField6.getText().isEmpty() || jTextField7.getText().isEmpty() ) {
             // Mostra il messaggio di errore
             javax.swing.JOptionPane.showMessageDialog(this, "Alcuni campi non sono stati compilati o non sono completi", "Errore", javax.swing.JOptionPane.ERROR_MESSAGE);
         } else {
-            PopUpOperatori po=new PopUpOperatori();
-            po.modificaTesto("Registrazione");
-            this.setVisible(false);
-            po.setVisible(true);
-            // Logica di registrazione qui
+            String nome=jTextField3.getText();
+            String cognome=jTextField4.getText();
+            String cf=jTextField5.getText();
+            String email=jTextField6.getText();
+            String password=jTextField7.getText();
+            String centro=jComboBox1.getSelectedItem().toString();
+            try {
+                ClientCM.registrazione(centro, nome, cognome, cf, email, password);
+            } catch (SQLException ex) {
+                Logger.getLogger(LoginRegistrazione.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (RemoteException ex) {
+                Logger.getLogger(LoginRegistrazione.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
     }//GEN-LAST:event_jButton2ActionPerformed
 
@@ -386,6 +378,5 @@ public class LoginRegistrazione extends javax.swing.JFrame {
     private javax.swing.JTextField jTextField5;
     private javax.swing.JTextField jTextField6;
     private javax.swing.JTextField jTextField7;
-    private javax.swing.JTextField jTextField8;
     // End of variables declaration//GEN-END:variables
 }

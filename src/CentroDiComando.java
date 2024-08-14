@@ -11,6 +11,10 @@ import java.util.Scanner;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.util.Random;
+import java.sql.Statement;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 /**
  *
  * @author simon
@@ -61,4 +65,20 @@ public class CentroDiComando extends UnicastRemoteObject implements CentroDiComa
             }
             return false;
         }
+
+   @Override
+    public int registrazione(String centro,String nome,String cognome,String cf,String email,String password)
+    {
+        int n =0;
+        Random r=new Random();
+        int id=r.nextInt();
+        String ins="INSERT INTO public.\"OperatoriRegistrati\"(\"CentroMonitoraggio\", \"Nome\", \"Cognome\", cf, email, \"userId\", password)VALUES ('"+centro+"','"+nome+"','"+cognome+"','"+cf+"','"+email+"','"+id+"','"+password+"')";
+       try {
+           Statement stm=conn.createStatement();
+           n=stm.executeUpdate(ins);//1 se inserito,0 se non ha inserito
+       } catch (SQLException ex) {
+           Logger.getLogger(CentroDiComando.class.getName()).log(Level.SEVERE, null, ex);
+       }
+       return n;
     }
+}

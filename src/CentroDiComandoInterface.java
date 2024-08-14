@@ -11,4 +11,5 @@ import java.sql.SQLException;
  */
 public interface CentroDiComandoInterface extends Remote{
     public boolean controlloLogin(String nome,String pass) throws RemoteException,SQLException;
+    public int registrazione(String centro,String nome,String cognome,String cf,String email,String password)throws RemoteException;
 }

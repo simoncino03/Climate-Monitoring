@@ -44,6 +44,22 @@ public class ClientCM {
         RicercaUtente ru=new RicercaUtente();
         ru.setVisible(true);
     }
+    public static void registrazione(String centro,String nome,String cognome,String cf,String email,String password) throws SQLException, RemoteException
+    {
+        if(cd.controlloLogin(email, password))
+        {
+             JOptionPane.showMessageDialog(lr, "Utente già presente nel db", "Errore", JOptionPane.ERROR_MESSAGE);
+        }else{
+            if(cd.registrazione(centro, nome, cognome, cf, email, password)==1)
+            {
+                lr.setVisible(false);
+                po.modificaTesto("Registrazione");
+                po.setVisible(true);
+            }else{
+                JOptionPane.showMessageDialog(lr, "Errore durante la registrazione", "Errore", JOptionPane.ERROR_MESSAGE);
+            }
+        }
+    }
     
     
 }
