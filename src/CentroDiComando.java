@@ -30,6 +30,10 @@ public class CentroDiComando extends UnicastRemoteObject implements CentroDiComa
     }
    
    public static void main(String [] args) throws RemoteException, SQLException{
+	   CentroDiComando cd= new CentroDiComando();
+       Registry reg=LocateRegistry.createRegistry(1090);
+       reg.rebind("Server", cd);
+       System.out.println("Server ready");
         System.out.println("Incominciamo a connetterci al db");
         System.out.println("Inserisci l'indirizzo del db");//127.0.0.1       
         String ind=sc.next();
@@ -48,10 +52,6 @@ public class CentroDiComando extends UnicastRemoteObject implements CentroDiComa
             } else {
                 System.out.println("Failed to make connection!");
             }
-       CentroDiComando cd= new CentroDiComando();
-       Registry reg=LocateRegistry.createRegistry(1090);
-       reg.rebind("Server", cd);
-       System.out.println("Server ready");
        
    }
     @Override

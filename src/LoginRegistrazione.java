@@ -4,6 +4,13 @@ import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import javax.swing.JTextField;
+
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.event.FocusAdapter;
+import java.awt.event.FocusEvent;
+
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
@@ -20,6 +27,7 @@ public class LoginRegistrazione extends javax.swing.JFrame {
      */
     public LoginRegistrazione() {
         initComponents();
+        initComponents1(); // Metodo che aggiunge i placeholder ai campi di testo
     }
 
     /**
@@ -30,7 +38,6 @@ public class LoginRegistrazione extends javax.swing.JFrame {
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
-
         PannelloLogin = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         filler1 = new javax.swing.Box.Filler(new java.awt.Dimension(100, 0), new java.awt.Dimension(100, 0), new java.awt.Dimension(100, 32767));
@@ -47,11 +54,15 @@ public class LoginRegistrazione extends javax.swing.JFrame {
         jComboBox1 = new javax.swing.JComboBox<>();
         jButton2 = new javax.swing.JButton();
         jButton4 = new javax.swing.JButton();
-
+        
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Climate Monitoring");
         setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         setResizable(false);
+        
+        getContentPane().setBackground(Color.CYAN);
+        PannelloLogin.setBackground(Color.GREEN);
+        PannelloRegistrazione.setBackground(Color.GREEN);
 
         PannelloLogin.setPreferredSize(new java.awt.Dimension(385, 625));
 
@@ -273,43 +284,43 @@ public class LoginRegistrazione extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_jTextField7ActionPerformed
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        // Controllo se i campi sono vuoti
-        if (jTextField1.getText().isEmpty() || jTextField2.getText().isEmpty()) {
+    private boolean isFieldEmpty(JTextField field, String placeholder) {
+        return field.getText().trim().equals(placeholder) || field.getText().trim().isEmpty();
+    }
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {
+        // Controlla se i campi sono vuoti
+        if (isFieldEmpty(jTextField1, "Email") || isFieldEmpty(jTextField2, "Password")) {
             // Mostra il messaggio di errore
             javax.swing.JOptionPane.showMessageDialog(this, "Alcuni campi non sono stati compilati", "Errore", javax.swing.JOptionPane.ERROR_MESSAGE);
         } else {
-            String email=jTextField1.getText();
-            String pass=jTextField2.getText();
+            String email = jTextField1.getText();
+            String pass = jTextField2.getText();
             try {
-                ClientCM.login(email,pass);
-                /* PopUpOperatori po=new PopUpOperatori();
-                po.modificaTesto("Login");
-                this.setVisible(false);
-                po.setVisible(true);
+                ClientCM.login(email, pass);
                 // Logica di login qui
-                */
             } catch (SQLException ex) {
                 Logger.getLogger(LoginRegistrazione.class.getName()).log(Level.SEVERE, null, ex);
             } catch (RemoteException ex) {
                 Logger.getLogger(LoginRegistrazione.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
-    }//GEN-LAST:event_jButton1ActionPerformed
+    }
 
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {
         // Controllo se i campi sono vuoti
-        if (jTextField3.getText().isEmpty() || jTextField4.getText().isEmpty() || jTextField5.getText().isEmpty() ||
-            jTextField6.getText().isEmpty() || jTextField7.getText().isEmpty() ) {
+        if (isFieldEmpty(jTextField3, "Nome") || isFieldEmpty(jTextField4, "Cognome") || 
+            isFieldEmpty(jTextField5, "Password") || isFieldEmpty(jTextField6, "Codice Fiscale") || 
+            isFieldEmpty(jTextField7, "Email")) {
             // Mostra il messaggio di errore
             javax.swing.JOptionPane.showMessageDialog(this, "Alcuni campi non sono stati compilati o non sono completi", "Errore", javax.swing.JOptionPane.ERROR_MESSAGE);
         } else {
-            String nome=jTextField3.getText();
-            String cognome=jTextField4.getText();
-            String cf=jTextField5.getText();
-            String email=jTextField6.getText();
-            String password=jTextField7.getText();
-            String centro=jComboBox1.getSelectedItem().toString();
+            String nome = jTextField3.getText();
+            String cognome = jTextField4.getText();
+            String cf = jTextField5.getText();
+            String email = jTextField6.getText();
+            String password = jTextField7.getText();
+            String centro = jComboBox1.getSelectedItem().toString();
             try {
                 ClientCM.registrazione(centro, nome, cognome, cf, email, password);
             } catch (SQLException ex) {
@@ -318,7 +329,41 @@ public class LoginRegistrazione extends javax.swing.JFrame {
                 Logger.getLogger(LoginRegistrazione.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
-    }//GEN-LAST:event_jButton2ActionPerformed
+    }
+
+    private void addPlaceholder(JTextField textField, String placeholder) {
+        textField.setText(placeholder);
+        textField.setForeground(Color.GRAY);
+
+        textField.addFocusListener(new FocusAdapter() {
+            @Override
+            public void focusGained(FocusEvent e) {
+                if (textField.getText().equals(placeholder)) {
+                    textField.setText("");
+                    textField.setForeground(Color.BLACK);
+                }
+            }
+
+            @Override
+            public void focusLost(FocusEvent e) {
+                if (textField.getText().isEmpty()) {
+                    textField.setText(placeholder);
+                    textField.setForeground(Color.GRAY);
+                }
+            }
+        });
+    }
+
+    private void initComponents1() {
+        addPlaceholder(jTextField1, "Email");  // Placeholder per il campo email del login
+        addPlaceholder(jTextField2, "Password");  // Placeholder per il campo password del login
+        addPlaceholder(jTextField3, "Nome");  // Placeholder per il campo nome
+        addPlaceholder(jTextField4, "Cognome");  // Placeholder per il campo cognome
+        addPlaceholder(jTextField6, "Codice Fiscale");  // Placeholder per il campo codice fiscale
+        addPlaceholder(jTextField7, "Email");  // Placeholder per il campo email della registrazione
+        addPlaceholder(jTextField5, "Password");  // Placeholder per il campo password della registrazione
+    }
+    
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
         this.setVisible(false);

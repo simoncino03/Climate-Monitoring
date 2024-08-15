@@ -21,24 +21,23 @@ public class ClientCM {
     static CentroDiComandoInterface cd;
     static LoginRegistrazione lr=new LoginRegistrazione();
     static PopUpOperatori po=new PopUpOperatori();
-    public static void main(String[] args) throws RemoteException, NotBoundException {
+    public static void main(String[] args) throws RemoteException, NotBoundException, SQLException {
         lr.setVisible(true);       
         Registry reg=LocateRegistry.getRegistry(1090);
         cd= (CentroDiComandoInterface) reg.lookup("Server"); 
     }
     
-    public static void login(String nome, String pass) throws SQLException, RemoteException{
-        boolean presente=cd.controlloLogin(nome, pass);
-        if(presente)
-        {
+    public static void login(String nome, String pass) throws SQLException, RemoteException {
+        boolean presente = cd.controlloLogin(nome, pass);
+        if (presente) {
             lr.setVisible(false);
             po.modificaTesto("Login");
             po.setVisible(true);
-            
-        }else{
-        JOptionPane.showMessageDialog(lr, "Utente non trovato,controlla le credenziali o registrati", "Errore", JOptionPane.ERROR_MESSAGE);
+        } else {
+            JOptionPane.showMessageDialog(lr, "Utente non trovato, controlla le credenziali o registrati", "Errore", JOptionPane.ERROR_MESSAGE);
         }
     }
+
     public static void ricercaUtente()
     {
         RicercaUtente ru=new RicercaUtente();
