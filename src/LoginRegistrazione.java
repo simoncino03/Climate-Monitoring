@@ -10,6 +10,7 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
+import java.util.ArrayList;
 
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
@@ -27,7 +28,16 @@ public class LoginRegistrazione extends javax.swing.JFrame {
      */
     public LoginRegistrazione() {
         initComponents();
+        try {
+            aggiungiCentri();
+        } catch (RemoteException ex) {
+            Logger.getLogger(LoginRegistrazione.class.getName()).log(Level.SEVERE, null, ex);
+        }
         initComponents1(); // Metodo che aggiunge i placeholder ai campi di testo
+        getContentPane().setBackground(Color.lightGray);
+        PannelloLogin.setBackground(Color.lightGray);
+        PannelloRegistrazione.setBackground(Color.lightGray);
+        
     }
 
     /**
@@ -38,6 +48,7 @@ public class LoginRegistrazione extends javax.swing.JFrame {
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
+
         PannelloLogin = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         filler1 = new javax.swing.Box.Filler(new java.awt.Dimension(100, 0), new java.awt.Dimension(100, 0), new java.awt.Dimension(100, 32767));
@@ -54,15 +65,11 @@ public class LoginRegistrazione extends javax.swing.JFrame {
         jComboBox1 = new javax.swing.JComboBox<>();
         jButton2 = new javax.swing.JButton();
         jButton4 = new javax.swing.JButton();
-        
+
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Climate Monitoring");
         setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         setResizable(false);
-        
-        getContentPane().setBackground(Color.CYAN);
-        PannelloLogin.setBackground(Color.GREEN);
-        PannelloRegistrazione.setBackground(Color.GREEN);
 
         PannelloLogin.setPreferredSize(new java.awt.Dimension(385, 625));
 
@@ -166,7 +173,7 @@ public class LoginRegistrazione extends javax.swing.JFrame {
             }
         });
 
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Non Presente", "Uboldo", "" }));
+        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Non Presente" }));
         jComboBox1.setToolTipText("Il tuo centro di monitoraggio?");
         jComboBox1.setPreferredSize(new java.awt.Dimension(64, 22));
         jComboBox1.setRequestFocusEnabled(false);
@@ -321,6 +328,7 @@ public class LoginRegistrazione extends javax.swing.JFrame {
             String email = jTextField6.getText();
             String password = jTextField7.getText();
             String centro = jComboBox1.getSelectedItem().toString();
+            System.out.println(centro);
             try {
                 ClientCM.registrazione(centro, nome, cognome, cf, email, password);
             } catch (SQLException ex) {
@@ -424,4 +432,12 @@ public class LoginRegistrazione extends javax.swing.JFrame {
     private javax.swing.JTextField jTextField6;
     private javax.swing.JTextField jTextField7;
     // End of variables declaration//GEN-END:variables
+
+    private void aggiungiCentri() throws RemoteException {
+        ArrayList<String> centri=ClientCM.popolaCentri();
+        for(int i=0;i<centri.size();i++)
+        {
+            jComboBox1.addItem(centri.get(i));
+        }
+    }
 }

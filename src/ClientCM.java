@@ -7,6 +7,7 @@ import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 import javax.swing.JOptionPane;
 /**
@@ -19,12 +20,17 @@ public class ClientCM {
      * 
      */
     static CentroDiComandoInterface cd;
-    static LoginRegistrazione lr=new LoginRegistrazione();
-    static PopUpOperatori po=new PopUpOperatori();
+    static LoginRegistrazione lr;
+    static PopUpOperatori po;
+    static CreazioneCentroMonitoraggio ccm;
     public static void main(String[] args) throws RemoteException, NotBoundException, SQLException {
-        lr.setVisible(true);       
         Registry reg=LocateRegistry.getRegistry(1090);
-        cd= (CentroDiComandoInterface) reg.lookup("Server"); 
+        cd= (CentroDiComandoInterface) reg.lookup("Server");
+        System.out.println("Server Connesso...");
+        lr=new LoginRegistrazione();
+        lr.setVisible(true); 
+        po=new PopUpOperatori();
+        ccm=new CreazioneCentroMonitoraggio();
     }
     
     public static void login(String nome, String pass) throws SQLException, RemoteException {
@@ -49,7 +55,11 @@ public class ClientCM {
         {
              JOptionPane.showMessageDialog(lr, "Utente già presente nel db", "Errore", JOptionPane.ERROR_MESSAGE);
         }else{
-            if(cd.registrazione(centro, nome, cognome, cf, email, password)==1)
+            if(centro.equalsIgnoreCase("Non presente"))
+            {
+               lr.setVisible(false);
+               ccm.setVisible(true);
+            }else if(cd.registrazione(centro, nome, cognome, cf, email, password)==1)//Se il risultato della query è uguale a 1 allora la registrazione è avvenuta
             {
                 lr.setVisible(false);
                 po.modificaTesto("Registrazione");
@@ -58,6 +68,23 @@ public class ClientCM {
                 JOptionPane.showMessageDialog(lr, "Errore durante la registrazione", "Errore", JOptionPane.ERROR_MESSAGE);
             }
         }
+    }
+    
+   public static void aggiungiCentro(){
+    JOptionPane.showMessageDialog(lr, "Campi compilati", "Errore", JOptionPane.ERROR_MESSAGE);
+
+   }
+
+    public static ArrayList<String> popolaCentri() throws RemoteException {
+      ArrayList<String> arrayPopolato=new ArrayList<>();
+      arrayPopolato=cd.popolaCentri();
+      return arrayPopolato;
+    }
+
+    static ArrayList<String> popolaAree() throws RemoteException {
+        ArrayList<String> arrayPopolato=new ArrayList<>();
+        arrayPopolato=cd.popolaAree();
+        return arrayPopolato;
     }
     
     

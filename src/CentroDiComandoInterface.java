@@ -5,6 +5,7 @@
 import java.rmi.Remote;
 import java.rmi.RemoteException;
 import java.sql.SQLException;
+import java.util.ArrayList;
 /**
  *
  * @author simon
@@ -12,4 +13,6 @@ import java.sql.SQLException;
 public interface CentroDiComandoInterface extends Remote{
     public boolean controlloLogin(String nome,String pass) throws RemoteException,SQLException;
     public int registrazione(String centro,String nome,String cognome,String cf,String email,String password)throws RemoteException;
+    public ArrayList<String> popolaCentri()throws RemoteException;
+    public ArrayList<String> popolaAree()throws RemoteException;
 }

@@ -13,6 +13,7 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.Random;
 import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 /**
@@ -30,10 +31,10 @@ public class CentroDiComando extends UnicastRemoteObject implements CentroDiComa
     }
    
    public static void main(String [] args) throws RemoteException, SQLException{
-	   CentroDiComando cd= new CentroDiComando();
-       Registry reg=LocateRegistry.createRegistry(1090);
-       reg.rebind("Server", cd);
-       System.out.println("Server ready");
+	CentroDiComando cd= new CentroDiComando();
+        Registry reg=LocateRegistry.createRegistry(1090);
+        reg.rebind("Server", cd);
+        System.out.println("Server ready");
         System.out.println("Incominciamo a connetterci al db");
         System.out.println("Inserisci l'indirizzo del db");//127.0.0.1       
         String ind=sc.next();
@@ -80,5 +81,41 @@ public class CentroDiComando extends UnicastRemoteObject implements CentroDiComa
            Logger.getLogger(CentroDiComando.class.getName()).log(Level.SEVERE, null, ex);
        }
        return n;
+    }
+    
+   @Override
+    public ArrayList<String> popolaCentri()
+    {
+        ArrayList<String>s=new ArrayList<>();
+        String sql="SELECT \"Nome\"  FROM public.\"CentroMonitoraggio\";";
+       try {
+           PreparedStatement preparedStatement = conn.prepareStatement(sql);
+           ResultSet resultSet = preparedStatement.executeQuery();
+           while(resultSet.next())
+           {
+               s.add(resultSet.getString(1));
+           }
+       } catch (SQLException ex) {
+           Logger.getLogger(CentroDiComando.class.getName()).log(Level.SEVERE, null, ex);
+       }
+        return s;
+    }
+    
+   @Override
+    public ArrayList<String> popolaAree()
+    {
+        ArrayList<String>s=new ArrayList<>();
+        String sql="SELECT \"Denominazione\" FROM public.\"CoordinateMonitoraggio\";";
+       try {
+           PreparedStatement preparedStatement = conn.prepareStatement(sql);
+           ResultSet resultSet = preparedStatement.executeQuery();
+           while(resultSet.next())
+           {
+               s.add(resultSet.getString(1));
+           }
+       } catch (SQLException ex) {
+           Logger.getLogger(CentroDiComando.class.getName()).log(Level.SEVERE, null, ex);
+       }
+        return s;
     }
 }
